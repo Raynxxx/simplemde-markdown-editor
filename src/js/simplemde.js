@@ -1306,12 +1306,17 @@ function SimpleMDE(options) {
 		return;
 	}
 
-
 	// Handle toolbar
-	if(options.toolbar === undefined) {
-		// Initialize
-		options.toolbar = [];
+	var customToolbars = options.customToolbar || [];
 
+	for(var idx in customToolbars) {
+		var toolbarDef = customToolbars[idx];
+		toolbarBuiltInButtons[toolbarDef.name] = toolbarDef;
+	}
+
+	// Initialize
+	if (options.toolbar === undefined) {
+		options.toolbar = [];
 
 		// Loop over the built in buttons, to get the preferred order
 		for(var key in toolbarBuiltInButtons) {
@@ -1326,8 +1331,7 @@ function SimpleMDE(options) {
 			}
 		}
 	}
-
-
+	
 	// Handle status bar
 	if(!options.hasOwnProperty("status")) {
 		options.status = ["autosave", "lines", "words", "cursor"];
@@ -1901,6 +1905,8 @@ SimpleMDE.redo = redo;
 SimpleMDE.togglePreview = togglePreview;
 SimpleMDE.toggleSideBySide = toggleSideBySide;
 SimpleMDE.toggleFullScreen = toggleFullScreen;
+SimpleMDE.replaceSelection = _replaceSelection;
+SimpleMDE.getState = getState;
 
 /**
  * Bind instance methods for exports.
